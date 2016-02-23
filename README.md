@@ -14,6 +14,12 @@ correctly with Electron, so it's currently ignoring that file and instead using 
 folder. I hope to fix this and stop embarrassing myself someday, but boy am I not
 a low-lever programmer.
 
+This library listens on both gaze and linger events, as defined in the EyeX SDK. I wasn't able
+to figure out a clean way to register a listener, so instead the javascript is responsible
+for polling the library for any updated events by calling `var res = eyex.ping()`. The 
+library will always return the latest
+result for each of the event types.
+
 ### License
 
 MIT

@@ -47,7 +47,7 @@ namespace eyex {
 
 
 	// ID of the global interactor that provides our data stream; must be unique within the application.
-	static const TX_STRING InteractorId = "Rainbow Dash";
+	static const TX_STRING InteractorId = "CoughDrop EyeX Module";
 
 	// global variables
 	static TX_HANDLE g_hGlobalInteractorSnapshot = TX_EMPTY_HANDLE;
