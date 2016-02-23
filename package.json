@@ -8,7 +8,7 @@
     "url": "https://github.com/coughdrop/eyex.git"
   },
   "scripts": {
-    "o-install": "echo 'ok'",
-    "install": "node-gyp rebuild"
+    "install": "echo 'ok'",
+    "real-install": "node-gyp rebuild"
   }
 }
