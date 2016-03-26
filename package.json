@@ -5,10 +5,8 @@
   "description": "retrieve events from EyeX libraries",
   "repository": {
     "type": "git",
-    "url": "https://github.com/coughdrop/eyex.git"
+    "url": "https://github.com/coughdrop/eyex"
   },
-  "scripts": {
-    "install": "echo 'ok'",
-    "real-install": "node-gyp rebuild"
-  }
+  "license": "MIT",
+  "scripts": {"install": "echo 'ok'","real-install": "node-gyp rebuild"}
 }
