@@ -35,6 +35,9 @@ for polling the library for any updated events by calling `var res = eyex.ping()
 library will always return the latest
 result for each of the event types.
 
+When this library is installed, it should automatically be used by 
+[gazelinger.js](https://github.com/CoughDrop/gazelinger) if also installed.
+
 ### License
 
 MIT
