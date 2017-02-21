@@ -1,11 +1,11 @@
 {
   "main": "eyex",
   "name": "eyex",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "retrieve events from EyeX libraries",
   "repository": {
     "type": "git",
-    "url": "https://github.com/coughdrop/eyex"
+    "url": "https://github.com/coughdrop/eyex.git"
   },
   "license": "MIT",
   "scripts": {"install": "echo 'ok'","real-install": "node-gyp rebuild"}
