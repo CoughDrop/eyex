@@ -7,6 +7,9 @@
     "type": "git",
     "url": "https://github.com/coughdrop/eyex.git"
   },
-  "license": "MIT",
-  "scripts": {"install": "echo 'ok'","real-install": "node-gyp rebuild"}
+  "scripts": {
+    "o-install": "echo 'ok'",
+    "install": "node-gyp rebuild"
+  },
+  "readme": "README.md"
 }
