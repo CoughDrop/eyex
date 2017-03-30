@@ -19,6 +19,8 @@ namespace eyex {
 	using v8::Function;
 	using node::AtExit;
 
+  static int status;
+
 	void jsHello(const FunctionCallbackInfo<Value>& args) {
 		Isolate* isolate = args.GetIsolate();
 		args.GetReturnValue().Set(String::NewFromUtf8(isolate, "world"));
@@ -97,33 +99,40 @@ namespace eyex {
 		switch (connectionState) {
 		case TX_CONNECTIONSTATE_CONNECTED: {
 			bool success;
+			status = 2;
 			printf("The connection state is now CONNECTED (We are connected to the EyeX Engine)\n");
 			// commit the snapshot with the global interactor as soon as the connection to the engine is established.
 			// (it cannot be done earlier because committing means "send to the engine".)
 			success = txCommitSnapshotAsync(g_hGlobalInteractorSnapshot, OnSnapshotCommitted, NULL) == TX_RESULT_OK;
 			if (!success) {
+			  status = -1;
 				printf("Failed to initialize the data stream.\n");
 			}
 			else
 			{
+			  status = 3;
 				printf("Waiting for fixation data to start streaming...\n");
 			}
 		}
 										   break;
 
 		case TX_CONNECTIONSTATE_DISCONNECTED:
+		  status = 5;
 			printf("The connection state is now DISCONNECTED (We are disconnected from the EyeX Engine)\n");
 			break;
 
 		case TX_CONNECTIONSTATE_TRYINGTOCONNECT:
+		  status = 1
 			printf("The connection state is now TRYINGTOCONNECT (We are trying to connect to the EyeX Engine)\n");
 			break;
 
 		case TX_CONNECTIONSTATE_SERVERVERSIONTOOLOW:
+		  status = -2;
 			printf("The connection state is now SERVER_VERSION_TOO_LOW: this application requires a more recent version of the EyeX Engine to run.\n");
 			break;
 
 		case TX_CONNECTIONSTATE_SERVERVERSIONTOOHIGH:
+		  status = -3;
 			printf("The connection state is now SERVER_VERSION_TOO_HIGH: this application requires an older version of the EyeX Engine to run.\n");
 			break;
 		}
@@ -146,6 +155,7 @@ namespace eyex {
 		Isolate* isolate = args.GetIsolate();
 		Local<Object> obj = Object::New(isolate);
 		Local<String> str = String::NewFromUtf8(isolate, "x");
+		obj->Set(String::NewFromUtf8(isolate, "status"), Number::New(isolate, status));
 		obj->Set(String::NewFromUtf8(isolate, "end_x"), Number::New(isolate, last_end_x));
 		obj->Set(String::NewFromUtf8(isolate, "end_y"), Number::New(isolate, last_end_y));
 		obj->Set(String::NewFromUtf8(isolate, "end_ts"), Number::New(isolate, last_end_ts));
@@ -171,6 +181,7 @@ namespace eyex {
 		char* eventDescription;
 
 		if (txGetFixationDataEventParams(hFixationDataBehavior, &eventParams) == TX_RESULT_OK) {
+		  status = 4;
 			eventType = eventParams.EventType;
 
 			double x = eventParams.X;
@@ -211,6 +222,7 @@ namespace eyex {
 	{
 		TX_GAZEPOINTDATAEVENTPARAMS eventParams;
 		if (txGetGazePointDataEventParams(hGazeDataBehavior, &eventParams) == TX_RESULT_OK) {
+		  status = 4;
 			last_gaze_x = eventParams.X;
 			last_gaze_y = eventParams.Y;
 			last_gaze_ts = eventParams.Timestamp;
@@ -268,9 +280,11 @@ namespace eyex {
 
 		// let the events flow until a key is pressed.
 		if (success) {
+		  status = 10;
 			printf("Initialization was successful.\n");
 		}
 		else {
+		  status = -10;
 			printf("Initialization failed.\n");
 		}
 		
