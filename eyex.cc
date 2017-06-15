@@ -122,7 +122,7 @@ namespace eyex {
 			break;
 
 		case TX_CONNECTIONSTATE_TRYINGTOCONNECT:
-		  status = 1
+		  status = 1;
 			printf("The connection state is now TRYINGTOCONNECT (We are trying to connect to the EyeX Engine)\n");
 			break;
 

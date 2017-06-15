@@ -1,7 +1,7 @@
 {
   "main": "eyex",
   "name": "eyex",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "retrieve events from EyeX libraries",
   "repository": {
     "type": "git",
