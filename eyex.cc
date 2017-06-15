@@ -19,7 +19,7 @@ namespace eyex {
 	using v8::Function;
 	using node::AtExit;
 
-  static int status;
+  static int status = 0;
 
 	void jsHello(const FunctionCallbackInfo<Value>& args) {
 		Isolate* isolate = args.GetIsolate();
@@ -304,6 +304,7 @@ namespace eyex {
 		if (!success) {
 			printf("EyeX could not be shut down cleanly. Did you remember to release all handles?\n");
 		}
+		status = 0;
 		return success;
 	}
 
