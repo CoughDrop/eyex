@@ -4,14 +4,14 @@
 #pragma comment (lib, "Tobii.EyeX.Client.lib")
 
 namespace eyex {
-
 	using v8::Local;
+	using v8::Context;
 	using v8::Persistent;
-	using v8::Handle;
 	using v8::Isolate;
 	using v8::FunctionCallbackInfo;
 	using v8::Object;
 	using v8::HandleScope;
+	using v8::NewStringType;
 	using v8::String;
 	using v8::Number;
 	using v8::Value;
@@ -19,11 +19,11 @@ namespace eyex {
 	using v8::Function;
 	using node::AtExit;
 
-  static int status = 0;
+    static int status = 0;
 
 	void jsHello(const FunctionCallbackInfo<Value>& args) {
 		Isolate* isolate = args.GetIsolate();
-		args.GetReturnValue().Set(String::NewFromUtf8(isolate, "world"));
+		args.GetReturnValue().Set(String::NewFromUtf8(isolate, "world", NewStringType::kNormal).ToLocalChecked());
 	}
 
 	static Isolate* g_callback_isolate = 0;
@@ -33,9 +33,10 @@ namespace eyex {
 		if (g_callback_isolate != 0) {
 			const unsigned argc = 1;
 			g_callback_isolate = g_callback_isolate->GetCurrent();
-			Local<Value> argv[argc] = { String::NewFromUtf8(g_callback_isolate, "data") };
+			Local<Context> context = g_callback_isolate->GetCurrentContext();
+			Local<Value> argv[argc] = { String::NewFromUtf8(g_callback_isolate, "data", NewStringType::kNormal).ToLocalChecked() };
 			Local<Function> callback = Local<Function>::New(g_callback_isolate, g_callback);
-			callback->Call(Null(g_callback_isolate), argc, argv);
+			callback->Call(context, Null(g_callback_isolate), argc, argv);
 		}
 	}
 
@@ -153,21 +154,22 @@ namespace eyex {
 
 	void jsPing(const FunctionCallbackInfo<Value>& args) {
 		Isolate* isolate = args.GetIsolate();
+		Local<Context> context = isolate->GetCurrentContext();
 		Local<Object> obj = Object::New(isolate);
-		Local<String> str = String::NewFromUtf8(isolate, "x");
-		obj->Set(String::NewFromUtf8(isolate, "status"), Number::New(isolate, status));
-		obj->Set(String::NewFromUtf8(isolate, "end_x"), Number::New(isolate, last_end_x));
-		obj->Set(String::NewFromUtf8(isolate, "end_y"), Number::New(isolate, last_end_y));
-		obj->Set(String::NewFromUtf8(isolate, "end_ts"), Number::New(isolate, last_end_ts));
-		obj->Set(String::NewFromUtf8(isolate, "begin_x"), Number::New(isolate, last_begin_x));
-		obj->Set(String::NewFromUtf8(isolate, "begin_y"), Number::New(isolate, last_begin_y));
-		obj->Set(String::NewFromUtf8(isolate, "begin_ts"), Number::New(isolate, last_begin_ts));
-		obj->Set(String::NewFromUtf8(isolate, "data_x"), Number::New(isolate, last_data_x));
-		obj->Set(String::NewFromUtf8(isolate, "data_y"), Number::New(isolate, last_data_y));
-		obj->Set(String::NewFromUtf8(isolate, "data_ts"), Number::New(isolate, last_data_ts));
-		obj->Set(String::NewFromUtf8(isolate, "gaze_x"), Number::New(isolate, last_gaze_x));
-		obj->Set(String::NewFromUtf8(isolate, "gaze_y"), Number::New(isolate, last_gaze_y));
-		obj->Set(String::NewFromUtf8(isolate, "gaze_ts"), Number::New(isolate, last_gaze_ts));
+		Local<String> str = String::NewFromUtf8(isolate, "x", NewStringType::kNormal).ToLocalChecked();
+		obj->Set(context, String::NewFromUtf8(isolate, "status", NewStringType::kNormal).ToLocalChecked(), Number::New(isolate, status));
+		obj->Set(context, String::NewFromUtf8(isolate, "end_x", NewStringType::kNormal).ToLocalChecked(), Number::New(isolate, last_end_x));
+		obj->Set(context, String::NewFromUtf8(isolate, "end_y", NewStringType::kNormal).ToLocalChecked(), Number::New(isolate, last_end_y));
+		obj->Set(context, String::NewFromUtf8(isolate, "end_ts", NewStringType::kNormal).ToLocalChecked(), Number::New(isolate, last_end_ts));
+		obj->Set(context, String::NewFromUtf8(isolate, "begin_x", NewStringType::kNormal).ToLocalChecked(), Number::New(isolate, last_begin_x));
+		obj->Set(context, String::NewFromUtf8(isolate, "begin_y", NewStringType::kNormal).ToLocalChecked(), Number::New(isolate, last_begin_y));
+		obj->Set(context, String::NewFromUtf8(isolate, "begin_ts", NewStringType::kNormal).ToLocalChecked(), Number::New(isolate, last_begin_ts));
+		obj->Set(context, String::NewFromUtf8(isolate, "data_x", NewStringType::kNormal).ToLocalChecked(), Number::New(isolate, last_data_x));
+		obj->Set(context, String::NewFromUtf8(isolate, "data_y", NewStringType::kNormal).ToLocalChecked(), Number::New(isolate, last_data_y));
+		obj->Set(context, String::NewFromUtf8(isolate, "data_ts", NewStringType::kNormal).ToLocalChecked(), Number::New(isolate, last_data_ts));
+		obj->Set(context, String::NewFromUtf8(isolate, "gaze_x", NewStringType::kNormal).ToLocalChecked(), Number::New(isolate, last_gaze_x));
+		obj->Set(context, String::NewFromUtf8(isolate, "gaze_y", NewStringType::kNormal).ToLocalChecked(), Number::New(isolate, last_gaze_y));
+		obj->Set(context, String::NewFromUtf8(isolate, "gaze_ts", NewStringType::kNormal).ToLocalChecked(), Number::New(isolate, last_gaze_ts));
 
 		args.GetReturnValue().Set(obj);
 	}
