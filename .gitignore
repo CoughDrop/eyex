@@ -1,5 +1,7 @@
-/lib
-/include
 /build
-Tobii.EyeX.Client.lib
+/include
+/old_lib
+/old_include
+./Tobii.EyeX.Client.lib
 Tobii.EyeX.Client.*.lib
+_*.lib
