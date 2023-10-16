@@ -28,8 +28,14 @@ some older versions of their libraries available with less restrictive licenses.
 
 Also, I was having serious trouble getting the eyex.node file in the build/Release folder to work
 correctly with Electron, so it's currently ignoring that file and instead using the one in the root
-folder. I hope to fix this and stop embarrassing myself someday, but boy am I not
+folder. That means the files need to be recompiled specifically for whatever version of
+Electron you use. I hope to fix this and stop embarrassing myself someday, but boy am I not
 a low-lever programmer.
+
+Note that the `init` function of `eyex.cc` defines the method names that will be available to be
+called from JavaScript via a node import, as well as their mapping to internal methods. While 
+additional methods may be available from the SDK, we keep the method called to a minimum here
+to keep consistency across libraries, and because this code is not fun to maintain.
 
 This library listens on both gaze and linger events, as defined in the EyeX SDK. I wasn't able
 to figure out a clean way to register a listener, so instead the javascript is responsible
